@@ -1,18 +1,34 @@
 /**
- * Módulo que crea y configura el servidor HTTP
+ * Lógica principal del servidor HTTP
+ * Maneja las rutas definidas en el ejercicio
  */
 const http = require('http');
 
+const routes = {
+  '/': 'Bienvenid@s! Gracias por tu visita.',
+  '/nosotros': 'Bienvenid@s a saber + de nosotros :)',
+  '/cursos': 'Te interesan nuestros cursos. Vení a conocer la oferta!',
+  '/contacto': 'Si querés contactarnos, hacelo a este Email: :)',
+};
+
 /**
- * Crea un servidor HTTP que utiliza la función router para manejar las solicitudes
- * @returns {http.Server} Instancia del servidor HTTP
+ * Crea y retorna un servidor HTTP configurado con las rutas del ejercicio
+ * @returns {http.Server}
  */
 function createServer() {
-  const server = http.createServer((req, res) => {
-    /* Aquí la lógica del enrutador */
-  });
+  return http.createServer((req, res) => {
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
 
-  return server;
+    const message = routes[req.url];
+
+    if (message) {
+      res.writeHead(200);
+      res.end(message);
+    } else {
+      res.writeHead(404);
+      res.end('No se ha encontrado la ruta ingresada.');
+    }
+  });
 }
 
 module.exports = createServer;
